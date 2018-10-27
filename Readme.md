@@ -64,4 +64,4 @@ url = http://127.0.0.1:80  #代理地址有个接口不用代理很难访问
 
 ### 开源协议
 
-[MIT Copyright (c) 2018 STRUGGLER](https://github.com/strugglerx/nsEngine/LICENSE)
+[MIT Copyright (c) 2018 STRUGGLER](https://github.com/strugglerx/nsEngine/blob/master/LICENSE)
