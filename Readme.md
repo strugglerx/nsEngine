@@ -60,32 +60,32 @@ url = http://127.0.0.1:8080/SportScore/default.aspx 体测页面是内网,需要
 ```
 ##### 页面&接口
 
-|主路由|二级路由|method
-| :------| -----
-|/|--|get
-|admin|--|get post
-|logout|--|get
-|api|msg|get post
-|--|point|get post
-|--|indexswiper|get
-|--|indexconfig|get
-|--|jobsdetail|get
-|--|jobslist|get
-|--|stepUpdate|post
-|--|steplist|get
-|--|library|get
-|--|libraryDetail|get
-|--|sports|post
-|--|eip|post
-|--|artlist|get
-|--|artdetail|get
-|--|artlike|post
-|manager|info|get
-|--|feedback|get post
-|--|artinsert|post
-|--|delete|post
-|--|option|post
-|--|changePwd|post
+|主路由|二级路由|method|
+| :------| -----|-------|
+|/|--|get|
+|admin|--|get post|
+|logout|--|get|
+|api|msg|get post|
+|--|point|get post|
+|--|indexswiper|get|
+|--|indexconfig|get|
+|--|jobsdetail|get|
+|--|jobslist|get|
+|--|stepUpdate|post|
+|--|steplist|get|
+|--|library|get|
+|--|libraryDetail|get|
+|--|sports|post|
+|--|eip|post|
+|--|artlist|get|
+|--|artdetail|get|
+|--|artlike|post|
+|manager|info|get|
+|--|feedback|get post|
+|--|artinsert|post|
+|--|delete|post|
+|--|option|post|
+|--|changePwd|post|
 
 ##### 后台管理截图
 
