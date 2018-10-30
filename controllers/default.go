@@ -3,6 +3,8 @@ package controllers
 import (
 	"encoding/json"
 	"github.com/astaxie/beego"
+	"server/models"
+	"server/utils"
 )
 
 type MainController struct {
@@ -21,36 +23,49 @@ func (res *MainResponse) JsonParse() string {
 }
 
 func (c *MainController) Get() {
-	sess :=c.GetSession("role")
-	if sess =="admin"{
-		c.Redirect("/admin",302)
-	}
-	c.Data["Website"] = "beego.me"
-	c.Data["Email"] = "astaxie@gmail.com"
-	c.TplName = "index.html"
+	c.TplName = "home.html"
 }
 
-func (c *MainController) LoginGet() {
-	sess :=c.GetSession("role")
-	if sess =="admin"{
-		c.Redirect("/admin",302)
-	}
-	c.Data["Website"] = "beego.me"
-	c.Data["Email"] = "astaxie@gmail.com"
-	c.TplName = "index.html"
-}
 
 func (c *MainController) Login() {
 	sess :=c.GetSession("role")
 	if sess ==nil{
-		c.SetSession("role","admin")
-		c.Data["Website"] = "second access"
-		c.Data["Email"] = "second@gmail.com"
+		c.TplName = "login.html"
 	}else{
-		c.Data["Website"] = sess
-		c.Data["Email"] = sess
+		c.Redirect("/manager",302)
 	}
-	c.TplName = "index.html"
+
+}
+
+func (c *MainController) LoginPost() {
+	sess :=c.GetSession("role")
+	if sess ==nil{
+		user:=c.GetString("user")
+		pwd:=c.GetString("passwd")
+
+		if user!=""&&pwd!=""{
+			//加密密码
+			cryptoPwd:=utils.Md5String(pwd)
+			verifyInfo:=models.UserVerify(user,cryptoPwd)
+			if len(verifyInfo)==1 {
+				c.SetSession("role",verifyInfo[0].Role)
+				c.SetSession("user",verifyInfo[0].User)
+				info := MainResponse{"1000", 0,"login success"}
+				c.Ctx.WriteString(info.JsonParse())
+			}else {
+				info := MainResponse{"1002", -2,"login fail"}
+				c.Ctx.WriteString(info.JsonParse())
+			}
+		}else {
+			info := MainResponse{"1002", -2,"params can not empty!"}
+			c.Ctx.WriteString(info.JsonParse())
+
+		}
+
+	}else{
+		info := MainResponse{"1001", -1,"you already login"}
+		c.Ctx.WriteString(info.JsonParse())
+	}
 }
 
 func (c *MainController) Logout() {

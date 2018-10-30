@@ -9,7 +9,7 @@ import (
 
 func init() {
 	beego.Router("/", &controllers.MainController{})
-	beego.Router("/admin", &controllers.MainController{},"get:Login;post:Login")
+	beego.Router("/admin", &controllers.MainController{},"get:Login;post:LoginPost")
 	beego.Router("/logout", &controllers.MainController{},"get:Logout")
 	//API路由
 	apiNs :=beego.NewNamespace("api",
@@ -25,6 +25,8 @@ func init() {
 		beego.NSRouter("jobslist",&controllers.ApiController{},"get:JobList"),
 		beego.NSRouter("stepUpdate",&controllers.ApiController{},"post:StepUpdate"),
 		beego.NSRouter("steplist",&controllers.ApiController{},"get:StepList"),
+		beego.NSRouter("library",&controllers.EipController{},"get:Library"),
+		beego.NSRouter("libraryDetail",&controllers.EipController{},"get:LibraryDetail"),
 		beego.NSRouter("sports",&controllers.EipController{},"post:SportEntry"),
 		beego.NSRouter("eip", &controllers.EipController{},"post:Entry"),
 		beego.NSRouter("artlist", &controllers.ApiController{}),
@@ -35,7 +37,7 @@ func init() {
 	managerNs :=beego.NewNamespace("manager",
 		beego.NSCond(func(ctx *context.Context) bool {
 			role:=ctx.Input.Session("role")
-			if role=="admin"{
+			if role==1{
 				return true
 			}
 			return false
@@ -43,9 +45,13 @@ func init() {
 		beego.NSBefore(func(ctx *context.Context) {
 			ctx.Output.Header("Content-Type", "application/json;charset=UTF-8")
 		}),
-		beego.NSRouter("feedback", &controllers.ManagerController{},"get:FeedBackList"),
+		beego.NSRouter("/", &controllers.ManagerController{},"get:ManagerIndex"),
+		beego.NSRouter("info", &controllers.ManagerController{},"get:ManagerInfo"),
+		beego.NSRouter("feedback", &controllers.ManagerController{},"get:FeedBackList;post:FeedBackSendMsg"),
 		beego.NSRouter("artinsert", &controllers.ManagerController{},"post:ArtInsert"),
 		beego.NSRouter("delete", &controllers.ManagerController{},"post:DbDelete"),
+		beego.NSRouter("option", &controllers.ManagerController{},"post:Option"),
+		beego.NSRouter("changePwd", &controllers.ManagerController{},"post:ChangePwd"),
 	)
 	//注册 namespace
 	beego.AddNamespace(apiNs)

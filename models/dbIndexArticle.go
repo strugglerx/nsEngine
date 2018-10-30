@@ -17,7 +17,10 @@ type indexArticle struct {
 //模块配置列表
 func IAList() []indexArticle {
 	database:=mymongo.GetDataBase()
-	db:=database.C("header_options").Find(bson.M{}).Select(bson.M{"_id":0})
+	db:=database.C("header_options").
+		Find(bson.M{}).
+		Sort("-date").
+		Select(bson.M{"_id":0})
 	result := []indexArticle{}
 	db.All(&result)
 	return result

@@ -5,19 +5,19 @@ import (
 	"server/models/mymongo"
 )
 
-type webUser struct {
+type WebUser struct {
 	Id    bson.ObjectId `json:"_id" bson:"_id,omitempty"`
 	User string      `json:"user"`
 	Passwd string    `json:"passwd"`
-	Role string      `json:"role"`
+	Role int      `json:"role"`
 }
 //用户验证
-func UserVerify(user, passwd string) []webUser {
+func UserVerify(user, passwd string) []WebUser {
 	database:=mymongo.GetDataBase()
 	db:=database.C("str_user").
 		Find(bson.M{"user":user,"passwd":passwd}).
 		Select(bson.M{"_id":0})
-	result := []webUser{}
+	result := []WebUser{}
 	db.All(&result)
 	return result
 }

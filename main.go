@@ -11,7 +11,7 @@ import (
 func main() {
 	defer mymongo.CloseMgo()
 	beego.BConfig.WebConfig.Session.SessionName="sessionId"
-	beego.BConfig.WebConfig.Session.SessionCookieLifeTime=1000
+	beego.BConfig.WebConfig.Session.SessionCookieLifeTime=3000
 	beego.BConfig.WebConfig.Session.SessionAutoSetCookie=true
     //错误页处理
 	beego.ErrorController(&controllers.ErrorController{})

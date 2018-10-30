@@ -58,11 +58,12 @@ func SignSet(type_, content,longitude, newName string,id int) bool {
 
 //"content" : "音乐学院", "latitude" : 40.802803, "longitude" : 111.69801
 
-func SignPull(type_, content ,latitude ,longitude string,id int  ) bool {
+func SignPull(type_, content ,longitude string,id int  ) bool {
 	database:=mymongo.GetDataBase()
 	err:=database.C("mapSign").
 		Update(bson.M{"id":id,"type":type_},
-			bson.M{"$pull":bson.M{"point":bson.M{"content" : content, "latitude" : latitude, "longitude" : longitude}}})
+			bson.M{"$pull":bson.M{"point":bson.M{"content" : content, "longitude" : longitude}}})
+	fmt.Println(err)
 	if err!=nil{
 		return  false
 	}

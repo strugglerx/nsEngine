@@ -1,0 +1,116 @@
+body1{
+	background-image: url(http://upload-images.jianshu.io/upload_images/2337041-f6d581547ddd5b09.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240);
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+.header_custom{
+	background-color:#0D1206;
+	border:none;
+	height: 60px;
+}
+@media screen and (max-width: 750px){
+	.layui-main {
+	    width: auto;
+	    margin: 0 10px;
+	}
+	.container_custom{
+		margin-top: 0;
+	}
+	.floor_box{
+		display: none;
+	}
+
+}
+.weui-switch-cp__input:checked ~ .weui-switch-cp__box {
+    border-color: #999;
+    background-color: #999;
+}
+.layui-nav{
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0;
+    background: none;
+}
+.logo{
+   position: absolute;
+   left: 0;
+   top: 16px;
+}
+.logo img{
+	width: 82px;
+	height: 31px;
+}
+.container_custom{
+	margin-top: 80px;
+}
+.left_img{
+	margin: 35px auto;
+	height:350px;
+}
+.left_box{
+	height:500px;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.right_box{
+	height:500px;
+	overflow: hidden;
+}
+.index_box{
+	margin-top: 100rpx;
+}
+.test_bg{
+	background-color: #ccc;
+}
+.test_bg1{
+	background-color: red;
+}
+.index_login{
+	width:100%;
+	height: 70%;
+	background-color: #fff;
+/*	box-shadow: 0 0 5px 5px #c2c2c2;*/
+	margin:30px auto;
+}
+.login_header{
+	padding-top: 30px;
+	text-align: center;
+}
+.login_header p{
+	margin:10px auto;
+
+}
+.login_form{
+	margin:0 30px;
+	font-size:18px;
+}
+.login_switch{
+	font-size: 14px;
+	color:#999;
+	width: 100%;
+	margin-top:10px;
+	height:40px;
+	line-height: 40px;
+	overflow: hidden;
+	display: flex;
+	justify-content: space-between;
+}
+.floor_box{
+	color:#666;
+	position: fixed;
+	text-align: center;
+	bottom: 30px;
+	left: 0;
+	right: 0;
+}
+.floor_box p{
+	margin-top:8px;
+
+}
+.layui-btn-primary:hover{
+    border-color: #f33103;
+    color: #333;
+}

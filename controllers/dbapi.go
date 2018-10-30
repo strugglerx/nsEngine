@@ -185,13 +185,13 @@ func (c *ApiController) PointPost(){
 			c.Ctx.WriteString(info.JsonParse())
 		}
 	}else if digest=="pull"{
-		ok := models.SignPull(type_,con,lat,lon,id)
+		ok := models.SignPull(type_,con,lon,id)
 		if ok{
 			info := MainResponse{"1000", 0,"Pull Success"}
 			c.Ctx.WriteString(info.JsonParse())
 		}
 	}else if digest=="set"{
-		newCon := c.GetString("newContent")
+		newCon := c.GetString("newName")
 
 		ok := models.SignSet(type_,con,lon,newCon,id)
 		if ok{

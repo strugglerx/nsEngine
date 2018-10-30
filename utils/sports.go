@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"github.com/astaxie/beego"
 	"regexp"
 	"strings"
 
@@ -29,8 +30,9 @@ func SportCurl(user string, pwd string) interface{} {
 		"btnok.x":           "4",
 		"btnok.y":           "12",
 	}
+	sportDomain:=beego.AppConfig.String("sport::url")
 
-	resp, _ := requests.Post("http://115.24.110.3/SportScore/default.aspx", headers, data)
+	resp, _ := requests.Post(sportDomain, headers, data)
 	doc, err := goquery.NewDocumentFromResponse(resp.R)
 	if err != nil ||resp.R.StatusCode!=200 {
 		panic(err)

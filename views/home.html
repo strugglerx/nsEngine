@@ -1,0 +1,215 @@
+
+<!-- saved from url=(0018)https://atecut.cn/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>内师助手-让你的生活更加便携</title>
+    <meta name="keywords" content="内蒙古师范大学,STRUGGLER,内师助手,GPA计算,校车时刻">
+    <meta name="description" content="内师助手是一款诞生在内蒙古师范大学的微信小程序。学校内网不能查成绩?用内师助手就可以查了!不清楚现在有没有校车?快用内师助手吧!它会告诉你现在还有几班车!不知道绩点怎么算?不如试试gpa计算功能,自动计算就是这么简单!">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="/static/struggler.ico">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/home/global.css">
+    <style type="text/css">
+        .site-idea li:hover{
+            transform: translateY(-5px);
+            transition: 0.3s;
+            border-radius:15px;
+            box-shadow: 0 0 8px 8px rgba(91,91,91,0.15);
+        }
+        #logo{
+            animation: logo 1.5s linear infinite;
+        }
+        @keyframes logo {
+            0%{
+                transform: scale(1);
+            }
+            50%{
+                transform: scale(.98);
+                opacity:0.7;
+            }
+            100%{
+                transform: scale(1):
+            }
+
+        }
+    	#qr{
+    		display: none;
+    		position: fixed;
+    		box-shadow: 0 10px 30px rgba(22,22,22,0.5);
+		    z-index: 1000;
+		    overflow: auto;
+		    top: 34%;
+		    left: 50%;
+		    border-radius: 30px;
+		    margin-left: -125px;
+    	}
+    	@media screen and (max-width: 1200px) { 
+			#qr{
+				top:26%;
+				border-radius: 30px;
+			}
+		}
+        .partner-box{
+            margin: 20px auto;
+            width: auto;
+            text-align: center;
+        }
+        .partner-img{
+            margin:10px 1.5px;
+            width: 40px;
+            height: 40px;
+            background-color: #0A0E11;
+            border-radius: 50%;
+            border:1px solid #ccc;
+        }
+        .partner-img:hover{
+            transform:scale(1.1);
+            opacity:0.6;
+            transition: 0.3s;
+            box-shadow: 0 0 4px 4px rgba(91,91,91,0.2);
+        }
+        .sigma-content{
+            margin: 10px;
+            text-align: center;
+        }
+        .sigma-middle-line:before{
+            content: '';
+            display: block;
+            height: 1px;
+            width: 100%;
+            background-color: #d2d2d2;/*颜色需与主题大背景色一致*/
+            position: relative;
+            top: 10px;/*调节线高*/
+            left: 0;
+        }
+        .sigma-line-text{
+            display: inline-block;
+            background: #eee;
+            padding: 0 18px 0 18px;
+            position: relative;
+            font-size: 20px;
+        }
+    </style>
+  <link id="layuicss-skincodecss" rel="stylesheet" href="/static/home/code.css" media="all"><link id="layuicss-layer" rel="stylesheet" href="/static/home/layer.css" media="all"></head>
+  
+  <body class="site-home" id="LAY_home" style="background-color: #eee;">
+    <div class="layui-header header header-index">
+      <div class="layui-main">
+        <a class="logo" href="/">
+          <img src="/static/home/logo.png" alt="AtECUT"></a>
+        <ul class="layui-nav">
+        <li class="layui-nav-item layui-hide-xs">
+          <a href="javascript:void(0)" target="_blank"></a>
+        </li>
+        <li class="layui-nav-item layui-hide-xs">
+          <a href="http://www.imnu.edu.cn/" target="_blank">学校官网</a>
+		</li>
+        <li class="layui-nav-item " lay-unselect>
+          <a href="/admin" target="_parent">后台管理</a>
+        </li>
+      </ul>  
+      </div>
+      
+    </div>
+    
+    <div class="site-banner" id="page">
+	  <!--<div class="site-banner-bg" style="background-image: url(images/spring.jpg);"></div>-->
+	  <div class="site-banner-bg" style="background-image: url(http://wx4.sinaimg.cn/large/a27af0cbly1fvw2r8vic4j21jk0gon17.jpg);"></div>
+	  <!--秋<div class="site-banner-bg" style="background-image: url(images/autumn.jpg);"></div>-->
+      <!--冬<div class="site-banner-bg" style="background-image: url(images/winner.jpg);"></div>-->
+      <div class="site-banner-main">
+        <div class="site-zfj site-zfj-anim">
+          <i class="layui-icon"  style="color: #fff; color: rgba(255,255,255,.7);"><img id="logo" src="/static/home/large.png"  class="layui-hide-xs" style="width: 250px;height: 250px;"></i></div>
+        <div class="layui-anim site-desc site-desc-anim" style="background-image: url(/static/home/desc.png);">
+          <cite>微信小程序，一种不需要下载安装即可使用的应用，它实现了应用“触手可及”的梦想，用户扫一扫或搜一下即可打开应用</cite>
+        </div>
+        <div class="layui-anim layui-anim-upbit" id="qr">
+    		<img src="/static/home/qr.jpg" style="width: 250px;height: 250px;" id="qrimg">        	
+        </div>
+        <div class="site-download">
+          <a href="javascript:void(0)" class="layui-inline site-down" target="_blank" id="wx">
+            <cite class="layui-icon">&#xe660;</cite>扫码体验</a>
+        </div>
+        <div class="site-version">
+        	<span>当前版本：v1.3.6</span>
+        	<span>
+            <a href="javascript:void(0)" rel="nofollow">更新日志</a></span>
+		</div>
+		<div class="site-banner-other">
+	      <a href="javascript:void()" target="_blank" class="site-star">
+	        <i class="layui-icon"></i>
+	        用户数 <cite id="number">13000</cite> 
+	      </a>
+	    </div>
+      </div>
+    </div>
+    
+    <div class="layui-main">
+      <ul class="site-idea">
+        <li>
+          <fieldset class="layui-elem-field layui-field-title">
+            <legend>微信小程序</legend>
+            <p>内师助手是一款诞生在内蒙古师范大学的微信小程序。</p>
+          </fieldset>
+        </li>
+        <li>
+          <fieldset class="layui-elem-field layui-field-title">
+            <legend>主要特点</legend>
+            <p>学校内网不能查成绩?用内师助手就可以查了!不清楚现在有没有校车?快用内师助手吧!它会告诉你现在还有几班车!不知道绩点怎么算?不如试试gpa计算功能,自动计算就是这么简单!</p>
+          </fieldset>
+        </li>
+        <li>
+          <fieldset class="layui-elem-field layui-field-title">
+            <legend>发现更多</legend>
+            <p>内师助手的更多功能正在陆续开发中,敬请期待ing</p></fieldset>
+        </li>
+      </ul>
+    </div>
+    <div class="layui-main">
+        <div class="partner-box">
+            <div class="sigma-content">
+                <div class="sigma-middle-line">
+                    <span class="sigma-line-text">小程序关联伙伴</span>
+                </div>
+            </div>
+            <img src="https://struggler2018-1251621192.cos.ap-beijing.myqcloud.com/logos/2.jpg" class="partner-img" alt="logo" title="内师大旅游学院">
+            <img src="https://struggler2018-1251621192.cos.ap-beijing.myqcloud.com/logos/3.jpg" class="partner-img" alt="logo" title="内师大盛乐校区学管会">
+            <img src="https://struggler2018-1251621192.cos.ap-beijing.myqcloud.com/logos/4.jpg" class="partner-img" alt="logo" title="内师大新媒体">
+            <img src="https://struggler2018-1251621192.cos.ap-beijing.myqcloud.com/logos/5.jpg" class="partner-img" alt="logo" title="生活怎么活">
+            <img src="https://struggler2018-1251621192.cos.ap-beijing.myqcloud.com/logos/6.jpg" class="partner-img" alt="logo" title="后起新秀社">
+            <img src="https://struggler2018-1251621192.cos.ap-beijing.myqcloud.com/logos/7.jpg" class="partner-img" alt="logo" title="五维分享录">
+            <img src="https://struggler2018-1251621192.cos.ap-beijing.myqcloud.com/logos/8.jpg" class="partner-img" alt="logo" title="内师大志愿者服务总队">
+            <img src="https://struggler2018-1251621192.cos.ap-beijing.myqcloud.com/logos/9.jpg" class="partner-img" alt="logo" title="内师大Intel英才生俱乐部">
+            <img src="https://struggler2018-1251621192.cos.ap-beijing.myqcloud.com/logos/10.jpg" class="partner-img" alt="logo" title="内师大外院教务考试中心">
+            <img src="https://struggler2018-1251621192.cos.ap-beijing.myqcloud.com/logos/11.jpg" class="partner-img" alt="logo" title="内师大微协">
+            <img src="https://struggler2018-1251621192.cos.ap-beijing.myqcloud.com/logos/12.jpg" class="partner-img" alt="logo" title="WulinToya光影">
+            <img src="https://struggler2018-1251621192.cos.ap-beijing.myqcloud.com/logos/13.jpg" class="partner-img" alt="logo" title="青核桃内蒙古大学生生活">
+            <img src="https://struggler2018-1251621192.cos.ap-beijing.myqcloud.com/logos/14.jpg" class="partner-img" alt="logo" title="内师大盛乐学委会">
+            <img src="https://struggler2018-1251621192.cos.ap-beijing.myqcloud.com/logos/15.jpg" class="partner-img" alt="logo" title="内师大嗨剧社">
+            <img src="https://struggler2018-1251621192.cos.ap-beijing.myqcloud.com/logos/1.jpg" class="partner-img" alt="logo" title="STRUGGLER">
+
+        </div>
+    </div>
+    <div class="layui-footer footer footer-index">
+      <div class="layui-main">
+        <p>© 2018<a href="https://lab.zqyyh.com/">lab.zqyyh.com</a>  All Rights Reserved.</p>
+        <p><i class="layui-icon">&#xe677;</i>  <a href="/#">STRUGGLER</a> | <a href="http://www.miitbeian.gov.cn/">蒙ICP备16005172号</a></p>
+  
+      </div>
+    </div>
+    <div class="site-tree-mobile layui-hide">
+      <i class="layui-icon"></i></div>
+    <div class="site-mobile-shade"></div>
+    <script src="/static/layui/layui.js"></script> 
+   <script src="/static/home/global.js"></script>
+    <script src="/static/home/jquery-3.3.1.min.js" type="text/javascript"></script>
+    <script src="/static/home/index.js" type="text/javascript"></script>
+    
+  
+
+</body></html>

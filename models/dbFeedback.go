@@ -9,7 +9,7 @@ type feedback struct {
 	Id    bson.ObjectId `json:"_id,omitempty" bson:"_id,omitempty"`
 	Openid string `json:"openid" bson:"openid,omitempty"`
 	Content string `json:"content" bson:"content,omitempty" `
-	CreateTime string `json:"createTime" bson:"createTime,omitempty" `
+	CreateTime int `json:"createTime" bson:"createTime,omitempty" `
 }
 
 
@@ -24,7 +24,7 @@ func FeedbackList() []feedback {
 	return result
 }
 
-func FeedbackInsert(openid,content,createTime string) bool {
+func FeedbackInsert(openid,content string,createTime int) bool {
 	database:=mymongo.GetDataBase()
 	temp:=feedback{
 		Openid:openid,

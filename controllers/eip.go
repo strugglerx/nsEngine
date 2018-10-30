@@ -45,6 +45,48 @@ func (c *EipController) Entry() {
 	}
 }
 
+func (c *EipController) Library() {
+	//c.Ctx.ResponseWriter.Header().Set("Access-Control-Allow-Origin", "*")
+	book := c.GetString("book")
+	page := c.GetString("page")
+
+	if book != "" && page != ""  {
+		result := utils.EipLibrary(book,page)
+		if result != "-1" {
+			var unresult interface{}
+			json.Unmarshal([]byte(result),&unresult)
+			info := CustomResponse{"1000", 0,unresult}
+			c.Ctx.WriteString(info.JsonFormat())
+		} else {
+			info := CustomResponse{"1001", -1,nil}
+			c.Ctx.WriteString(info.JsonFormat())
+		}
+	} else {
+		info := CustomResponse{"1002", -2,nil}
+		c.Ctx.WriteString(info.JsonFormat())
+	}
+}
+
+func (c *EipController) LibraryDetail() {
+	//c.Ctx.ResponseWriter.Header().Set("Access-Control-Allow-Origin", "*")
+	id := c.GetString("id")
+	if id != ""  {
+		result := utils.EipLibraryDetail(id)
+		if result != "-1" {
+			var unresult interface{}
+			json.Unmarshal([]byte(result),&unresult)
+			info := CustomResponse{"1000", 0,unresult}
+			c.Ctx.WriteString(info.JsonFormat())
+		} else {
+			info := CustomResponse{"1001", -1,nil}
+			c.Ctx.WriteString(info.JsonFormat())
+		}
+	} else {
+		info := CustomResponse{"1002", -2,nil}
+		c.Ctx.WriteString(info.JsonFormat())
+	}
+}
+
 
 
 func (c *EipController) SportEntry() {
