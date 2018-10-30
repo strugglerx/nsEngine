@@ -61,7 +61,7 @@ url = http://127.0.0.1:8080/SportScore/default.aspx 体测页面是内网,需要
 ##### 页面&接口
 
 |主路由|二级路由|method
-|:---|:---
+|:-------|-----
 |/|--|get
 |admin|--|get post
 |logout|--|get
