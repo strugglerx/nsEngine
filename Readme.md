@@ -4,7 +4,7 @@
 ![language-go](https://img.shields.io/badge/language-Go-blue.svg)
 [![](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/strugglerx/gpaCalculator/blob/master/LICENSE)
 
-*代码仅供参考(2018/10/11)*
+*代码仅供参考(2018/11/11)*
 
 *新增客服关键词接口,修复客服会话接收问题*
 
