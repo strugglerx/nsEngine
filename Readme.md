@@ -4,7 +4,10 @@
 ![language-go](https://img.shields.io/badge/language-Go-blue.svg)
 [![](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/strugglerx/gpaCalculator/blob/master/LICENSE)
 
-*代码仅供参考(2018/10/30)*
+*代码仅供参考(2018/10/11)*
+
+*新增客服关键词接口,修复客服会话接收问题*
+
 
 ## 基于go语言重构的后端
 >  因为最近大四没事干,还不能离校,所以只能不断学习咯,目前所有接口已经移植过来了,小程序的开发板也全部用到了go的接口
@@ -71,30 +74,35 @@ url = http://127.0.0.1:8080/SportScore/default.aspx 体测页面是内网,需要
 |--|indexconfig|get|
 |--|jobsdetail|get|
 |--|jobslist|get|
-|--|stepUpdate|post|
+|--|stepupdate|post|
 |--|steplist|get|
 |--|library|get|
-|--|libraryDetail|get|
+|--|librarydetail|get|
 |--|sports|post|
 |--|eip|post|
 |--|artlist|get|
 |--|artdetail|get|
-|--|artlike|post|
+|--|artuplike|post|
+|--|adlist|get|
 |manager|info|get|
 |--|feedback|get post|
 |--|artinsert|post|
 |--|delete|post|
 |--|option|post|
 |--|changePwd|post|
-
+|--|adinsert|post|
+|--|adlist|get|
+|--|keywordinsert|post|
+|--|keywordlist|get|
 ##### 后台管理截图
 
-![模块开关](./google-chrome_20181030111528.png)
+![login](./google-chrome_20181030111528.png)
 
-![模块开关](./google-chrome_20181030104626.png)
-
+![模块开关](./google-chrome_20181111101213.png)
 
 ![坐标管理](./google-chrome_20181030104635.png)
+
+![keyword](./google-chrome_20181111101221.png)
 
 ##### 怎么体验内师助手?
 

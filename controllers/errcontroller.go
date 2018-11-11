@@ -13,7 +13,7 @@ func (c *ErrorController) Error404() {
 }
 func (c *ErrorController) Error405() {
 	//c.Data["content"] = "page not found"
-	c.TplName = "404.html"
+	c.TplName = "405.html"
 
 }
 func (c *ErrorController) Error501() {

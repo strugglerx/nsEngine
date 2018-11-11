@@ -34,8 +34,12 @@ func netlist(cookie *http.Cookie) string {
 	proxy:=beego.AppConfig.String("proxy::url")
 	reqs.Proxy(proxy)
 	headers := normalHeader("")
-	req, _ := reqs.Post(EipDomain+"/EIP/edu/wangfei/queryUsrBindProduct.htm", headers)
+	req, err := reqs.Post(EipDomain+"/EIP/edu/wangfei/queryUsrBindProduct.htm", headers)
+	if err!=nil{
+		return "-1"
+	}
 	status := gjson.Get(req.Text(), "#").Bool()
+	//fmt.Printf("%+v",status)
 	if status {
 		return gjson.Get(req.Text(), "0.otherData").String()
 	} else {
@@ -60,7 +64,10 @@ func cardlist(cookie *http.Cookie) string {
 	var reqs = requests.Requests()
 	reqs.SetCookie(cookie)
 	headers := normalHeader("")
-	req, _ := reqs.Post(EipDomain+"/EIP/edu/ykt_tongji.htm", headers)
+	req, err := reqs.Post(EipDomain+"/EIP/edu/ykt_tongji.htm", headers)
+	if err!=nil{
+		return "-1"
+	}
 	// fmt.Println(req.Text())
 	return gjson.Get(req.Text(), "tongji.0.CDATE").String()
 }
@@ -73,7 +80,10 @@ func carddetail(date string, cookie *http.Cookie) string {
 	data := requests.Datas{
 		"date": date,
 	}
-	req, _ := reqs.Post(EipDomain+"/EIP/edu/ykt_mingxi.htm", headers, data)
+	req, err := reqs.Post(EipDomain+"/EIP/edu/ykt_mingxi.htm", headers, data)
+	if err!=nil{
+		return "-1"
+	}
 	// fmt.Println(req.Text())
 	pop := fmt.Sprintf("%d", gjson.Get(req.Text(), "mingxi.#").Int()-1)
 	// s := strconv.Itoa(i) int转string
@@ -89,7 +99,10 @@ func info(cookie *http.Cookie) string {
 	var reqs = requests.Requests()
 	reqs.SetCookie(cookie)
 	headers := normalHeader("")
-	req, _ := reqs.Post(EipDomain+"/EIP/edu/xueji.htm", headers)
+	req, err := reqs.Post(EipDomain+"/EIP/edu/xueji.htm", headers)
+	if err!=nil{
+		return "-1"
+	}
 	return req.Text()
 }
 
@@ -101,7 +114,10 @@ func class_(date string, cookie *http.Cookie) string {
 	data := requests.Datas{
 		"monday_": date,
 	}
-	req, _ := reqs.Post(EipDomain+"/EIP/qiandao/kebiao/queryKebiaoByUserId.htm", headers, data)
+	req, err := reqs.Post(EipDomain+"/EIP/qiandao/kebiao/queryKebiaoByUserId.htm", headers, data)
+	if err!=nil{
+		return "-1"
+	}
 	if len(req.Text()) > 0 {
 		return req.Text()
 	}
@@ -114,7 +130,10 @@ func score(cookie *http.Cookie) string {
 	var reqs = requests.Requests()
 	reqs.SetCookie(cookie)
 	headers := normalHeader("")
-	req, _ := reqs.Post(EipDomain+"/EIP/edu/chengji.htm", headers)
+	req, err := reqs.Post(EipDomain+"/EIP/edu/chengji.htm", headers)
+	if err!=nil{
+		return "-1"
+	}
 	// fmt.Println(req.Text())
 	change := []byte(req.Text())
 	//单个成绩数据结构

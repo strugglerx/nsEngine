@@ -32,10 +32,13 @@ func SportCurl(user string, pwd string) interface{} {
 	}
 	sportDomain:=beego.AppConfig.String("sport::url")
 
-	resp, _ := requests.Post(sportDomain, headers, data)
+	resp, err := requests.Post(sportDomain, headers, data)
+	if err!=nil{
+		return "-1"
+	}
 	doc, err := goquery.NewDocumentFromResponse(resp.R)
 	if err != nil ||resp.R.StatusCode!=200 {
-		panic(err)
+		return "-1"
 	}
 	//数据初始化
 	type AllData struct {

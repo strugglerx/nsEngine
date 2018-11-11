@@ -2,9 +2,8 @@ package controllers
 
 import (
 	"encoding/json"
-	"server/utils"
-
 	"github.com/astaxie/beego"
+	"server/utils"
 )
 
 type EipController struct {
@@ -19,24 +18,63 @@ type CustomResponse struct {
 }
 
 func (res *CustomResponse) JsonFormat() string {
-	datas, _ := json.Marshal(res)
+	//datas, _ := json.Marshal(res)
+	datas:=utils.WxJsonMarshal(res)
+	return string(datas)
+}
+
+//eip响应生成结构体
+type CustomEipResponse struct {
+	Code   string `json:"code"`
+	Status int64    `json:"status"`
+	Data interface{}    `json:"data,omitempty"`
+	Encrypt string   `json:"encrypt,omitempty"`
+}
+
+func (res *CustomEipResponse) JsonFormat() string {
+	//datas, _ := json.Marshal(res)
+	datas:=utils.WxJsonMarshal(res)
 	return string(datas)
 }
 
 func (c *EipController) Entry() {
-	//c.Ctx.ResponseWriter.Header().Set("Access-Control-Allow-Origin", "*")
-	user := c.GetString("user")
+	var user string
 	customtype := c.GetString("type")
+	user =c.Ctx.Request.Header.Get("auth")
+	//限制只有type等于info才接受user的值
+	if user==""&&customtype=="info"{
+		user = c.GetString("user")
+	}
+	//c.Ctx.ResponseWriter.Header().Set("Access-Control-Allow-Origin", "*")
 	date := c.GetString("date")
 	if user != "" && customtype != "" || len(date) == 10 {
-		result := utils.EipEntry(user, customtype, date)
-		if result != "-1" {
-			var unresult interface{}
-			json.Unmarshal([]byte(result),&unresult)
-			info := CustomResponse{"1000", 0,unresult}
-			c.Ctx.WriteString(info.JsonFormat())
-		} else {
-			info := CustomResponse{"1001", -1,nil}
+		var cryptoUser string
+		if customtype=="info"{
+			cryptoUser = utils.CustomAesEncrypt(user)
+			result := utils.EipEntry(user, customtype, date)
+			if result != "-1" {
+				var unresult interface{}
+				json.Unmarshal([]byte(result),&unresult)
+				info := CustomEipResponse{"1000", 0,unresult,cryptoUser}
+				c.Ctx.WriteString(info.JsonFormat())
+			} else {
+				info := CustomResponse{"1001", -1,nil}
+				c.Ctx.WriteString(info.JsonFormat())
+			}
+		}else if len(user)==24{
+			cryptoUser = utils.CustomAesDecrypt(user)
+			result := utils.EipEntry(cryptoUser, customtype, date)
+			if result != "-1" {
+				var unresult interface{}
+				json.Unmarshal([]byte(result),&unresult)
+				info := CustomResponse{"1000", 0,unresult}
+				c.Ctx.WriteString(info.JsonFormat())
+			} else {
+				info := CustomResponse{"1001", -1,nil}
+				c.Ctx.WriteString(info.JsonFormat())
+			}
+		}else {
+			info := CustomResponse{"1002", -2,nil}
 			c.Ctx.WriteString(info.JsonFormat())
 		}
 	} else {

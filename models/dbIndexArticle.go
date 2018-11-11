@@ -19,7 +19,6 @@ func IAList() []indexArticle {
 	database:=mymongo.GetDataBase()
 	db:=database.C("header_options").
 		Find(bson.M{}).
-		Sort("-date").
 		Select(bson.M{"_id":0})
 	result := []indexArticle{}
 	db.All(&result)

@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bytes"
 	"encoding/json"
 	"github.com/asmcos/requests"
 	"github.com/astaxie/beego"
@@ -70,8 +71,17 @@ func WxSendMsg(content,openid,accessToken string) int64{
 	body.Touser=openid
 	body.Msgtype="text"
 	body.Text.Content=content
-	bb,_:=json.Marshal(body)
-	//封装json请求
+	//解决json marshal 转义问题
+	bb :=WxJsonMarshal(body)
+	//封装json post请求
 	jres:=JsonPost(url,string(bb))
 	return gjson.Get(jres,"errcode").Int()
+}
+
+func WxJsonMarshal(t interface{}) []byte {
+	buffer := bytes.NewBuffer([]byte{})
+	jsonEncoder := json.NewEncoder(buffer)
+	jsonEncoder.SetEscapeHTML(false)
+	jsonEncoder.Encode(t)
+	return buffer.Bytes()
 }

@@ -35,6 +35,31 @@ func (c *ManagerController) ArtInsert() {
 	info := CustomResponse{"1000", 0,ok}
 	c.Ctx.WriteString(info.JsonFormat())
 }
+//广告数据增加 AdInsert
+func (c *ManagerController) AdInsert() {
+	uuid := c.GetString("uuid")
+	dateStart := c.GetString("dateStart")
+	dateEnd := c.GetString("dateEnd")
+	path := c.GetString("path")
+	remark := c.GetString("remark")
+	if (uuid!=""&&dateStart!=""&&dateEnd!=""&&path!=""&&remark!=""){
+		ok:=models.AdInsert(uuid,path,dateStart,dateEnd,remark)
+		if ok{
+			info := CustomResponse{"1000", 0,ok}
+			c.Ctx.WriteString(info.JsonFormat())
+			return
+		}
+		info := CustomResponse{"1001", -1,nil}
+		c.Ctx.WriteString(info.JsonFormat())
+	}
+
+}
+//广告数据列表
+func (c *ManagerController) AdList() {
+	result:=models.AdList()
+	info := CustomResponse{"1000", 0,result}
+	c.Ctx.WriteString(info.JsonFormat())
+}
 //删除数据
 func (c *ManagerController) DbDelete() {
 	type_ := c.GetString("type")
@@ -50,6 +75,14 @@ func (c *ManagerController) DbDelete() {
 		c.Ctx.WriteString(info.JsonParse())
 	case "step":
 		ok =models.StepDelete(id)
+		info := MainResponse{"1000", 0,"success"}
+		c.Ctx.WriteString(info.JsonParse())
+	case "ads":
+		ok =models.AdDel(id)
+		info := MainResponse{"1000", 0,"success"}
+		c.Ctx.WriteString(info.JsonParse())
+	case "keyword":
+		ok =models.KeywordDelete(id)
 		info := MainResponse{"1000", 0,"success"}
 		c.Ctx.WriteString(info.JsonParse())
 	default:
@@ -78,7 +111,7 @@ func (c *ManagerController) FeedBackSendMsg(){
 	}
 
 }
-
+//option
 func (c *ManagerController) Option(){
 	id,_ :=c.GetInt("id")
 	status,_:=c.GetInt("status")
@@ -91,6 +124,7 @@ func (c *ManagerController) Option(){
 		c.Ctx.WriteString(info.JsonParse())
 	}
 }
+//改变密码
 func (c *ManagerController) ChangePwd(){
 	user:=c.GetString("user")
 	passwd:=c.GetString("passwd")
@@ -104,4 +138,29 @@ func (c *ManagerController) ChangePwd(){
 		c.Ctx.WriteString(info.JsonParse())
 	}
 }
+//keywords
+func (c *ManagerController) KeywordInsert() {
+	keyword :=c.GetString("keyword")
+	content :=c.GetString("content")
+	ok:=models.KeywordInsert(content,keyword)
+	if ok{
+		info := CustomResponse{"1000", 0,true}
+		c.Ctx.WriteString(info.JsonFormat())
+		return
+	}
+	info := CustomResponse{"1001", -1,nil}
+	c.Ctx.WriteString(info.JsonFormat())
+}
+
+func (c *ManagerController) KeywordList() {
+	result:=models.KeywordList()
+	if len(result)>0&&result!=nil{
+		info := CustomResponse{"1000", 0,result}
+		c.Ctx.WriteString(info.JsonFormat())
+		return
+	}
+	info := CustomResponse{"1001", -1,nil}
+	c.Ctx.WriteString(info.JsonFormat())
+}
+
 
