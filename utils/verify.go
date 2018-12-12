@@ -1,3 +1,13 @@
+/*
+ * @Description:
+ * @Author: Moqi
+ * @Date: 2018-12-12 10:38:20
+ * @Email: str@li.cm
+ * @Github: https://github.com/strugglerx
+ * @LastEditors: Moqi
+ * @LastEditTime: 2018-12-12 10:38:22
+ */
+
 package utils
 
 import (
@@ -12,28 +22,28 @@ import (
 	"strings"
 )
 
-func VerifySha1(token,timestamp,nonce string) string {
-	verify :=[]string{token,timestamp,nonce}
+func VerifySha1(token, timestamp, nonce string) string {
+	verify := []string{token, timestamp, nonce}
 	sort.Strings(verify)
-	res:=strings.Join(verify,"")
+	res := strings.Join(verify, "")
 	//返回验证数据
 	return Sha1String(res)
 }
 
 func Sha1String(value string) string {
 
-	d:=sha1.New()
+	d := sha1.New()
 	d.Write([]byte(value))
-	r:=d.Sum(nil)
-	result:=hex.EncodeToString(r)
+	r := d.Sum(nil)
+	result := hex.EncodeToString(r)
 	return result
 }
 
-func Md5String(value string)string  {
-	m:=md5.New()
+func Md5String(value string) string {
+	m := md5.New()
 	m.Write([]byte(value))
-	r:=m.Sum(nil)
-	result:=hex.EncodeToString(r)
+	r := m.Sum(nil)
+	result := hex.EncodeToString(r)
 	return result
 }
 
@@ -78,20 +88,21 @@ func AesDecrypt(crypted, key []byte) ([]byte, error) {
 	return origData, nil
 }
 
-const aeskey ="3dsa124dsf6gfg6z"
+const aeskey = "3dsa124dsf6gfg6z"
+
 //aes加密解密接口
 func CustomAesEncrypt(data string) string {
-	Customcrypto,err:=AesEncrypt([]byte(data),[]byte(aeskey))
-	if err!=nil{
+	Customcrypto, err := AesEncrypt([]byte(data), []byte(aeskey))
+	if err != nil {
 		return "-1"
 	}
 	return base64.StdEncoding.EncodeToString(Customcrypto)
 }
 
 func CustomAesDecrypt(data string) string {
-	byteData,_:=base64.StdEncoding.DecodeString(data)
-	CustomDecrypt,err:= AesDecrypt(byteData,[]byte(aeskey))
-	if err!=nil{
+	byteData, _ := base64.StdEncoding.DecodeString(data)
+	CustomDecrypt, err := AesDecrypt(byteData, []byte(aeskey))
+	if err != nil {
 		return "-1"
 	}
 	return string(CustomDecrypt)

@@ -1,9 +1,20 @@
+/*
+ * @Description:
+ * @Author: Moqi
+ * @Date: 2018-12-12 10:38:10
+ * @Email: str@li.cm
+ * @Github: https://github.com/strugglerx
+ * @LastEditors: Moqi
+ * @LastEditTime: 2018-12-12 10:38:12
+ */
+
 package utils
 
 import (
-	"github.com/astaxie/beego"
 	"regexp"
 	"strings"
+
+	"github.com/astaxie/beego"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/asmcos/requests" // "fmt"
@@ -30,14 +41,14 @@ func SportCurl(user string, pwd string) interface{} {
 		"btnok.x":           "4",
 		"btnok.y":           "12",
 	}
-	sportDomain:=beego.AppConfig.String("sport::url")
+	sportDomain := beego.AppConfig.String("sport::url")
 
 	resp, err := requests.Post(sportDomain, headers, data)
-	if err!=nil{
+	if err != nil {
 		return "-1"
 	}
 	doc, err := goquery.NewDocumentFromResponse(resp.R)
-	if err != nil ||resp.R.StatusCode!=200 {
+	if err != nil || resp.R.StatusCode != 200 {
 		return "-1"
 	}
 	//数据初始化
@@ -48,9 +59,9 @@ func SportCurl(user string, pwd string) interface{} {
 		SportsDetail interface{} `json:"sportsDetail"`
 	}
 	//提前扩展十个长度
-	citList:=make([]map[string]string,10) //体育班信息
-	var scoreList []string    //体育班成绩过度列表
-	var list []map[string]string    //体测信息
+	citList := make([]map[string]string, 10) //体育班信息
+	var scoreList []string                   //体育班成绩过度列表
+	var list []map[string]string             //体测信息
 
 	Result := new(AllData)
 	//名字
@@ -75,14 +86,14 @@ func SportCurl(user string, pwd string) interface{} {
 		scoreList = append(scoreList, res)
 	})
 	//初始化
-	num :=0
+	num := 0
 	for i, single := range scoreList {
 		citem := map[string]string{}
 
 		if i%2 == 0 {
 			citem["item"] = single
 			citem["value"] = scoreList[i+1]
-			citList[num] =citem
+			citList[num] = citem
 			num++
 			continue
 		}

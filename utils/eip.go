@@ -1,13 +1,24 @@
+/*
+ * @Description:
+ * @Author: Moqi
+ * @Date: 2018-12-12 10:37:02
+ * @Email: str@li.cm
+ * @Github: https://github.com/strugglerx
+ * @LastEditors: Moqi
+ * @LastEditTime: 2018-12-12 10:37:05
+ */
+
 package utils
 
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
+	"regexp"
+
 	"github.com/asmcos/requests"
 	"github.com/astaxie/beego"
 	"github.com/tidwall/gjson" // "github.com/PuerkitoBio/goquery"
-	"net/http"
-	"regexp"
 	// // "reflect"
 )
 
@@ -31,11 +42,11 @@ func netlist(cookie *http.Cookie) string {
 	var reqs = requests.Requests()
 	reqs.SetCookie(cookie)
 	//获取配置里的代理链接
-	proxy:=beego.AppConfig.String("proxy::url")
+	proxy := beego.AppConfig.String("proxy::url")
 	reqs.Proxy(proxy)
 	headers := normalHeader("")
 	req, err := reqs.Post(EipDomain+"/EIP/edu/wangfei/queryUsrBindProduct.htm", headers)
-	if err!=nil{
+	if err != nil {
 		return "-1"
 	}
 	status := gjson.Get(req.Text(), "#").Bool()
@@ -65,7 +76,7 @@ func cardlist(cookie *http.Cookie) string {
 	reqs.SetCookie(cookie)
 	headers := normalHeader("")
 	req, err := reqs.Post(EipDomain+"/EIP/edu/ykt_tongji.htm", headers)
-	if err!=nil{
+	if err != nil {
 		return "-1"
 	}
 	// fmt.Println(req.Text())
@@ -81,7 +92,7 @@ func carddetail(date string, cookie *http.Cookie) string {
 		"date": date,
 	}
 	req, err := reqs.Post(EipDomain+"/EIP/edu/ykt_mingxi.htm", headers, data)
-	if err!=nil{
+	if err != nil {
 		return "-1"
 	}
 	// fmt.Println(req.Text())
@@ -100,7 +111,7 @@ func info(cookie *http.Cookie) string {
 	reqs.SetCookie(cookie)
 	headers := normalHeader("")
 	req, err := reqs.Post(EipDomain+"/EIP/edu/xueji.htm", headers)
-	if err!=nil{
+	if err != nil {
 		return "-1"
 	}
 	return req.Text()
@@ -115,7 +126,7 @@ func class_(date string, cookie *http.Cookie) string {
 		"monday_": date,
 	}
 	req, err := reqs.Post(EipDomain+"/EIP/qiandao/kebiao/queryKebiaoByUserId.htm", headers, data)
-	if err!=nil{
+	if err != nil {
 		return "-1"
 	}
 	if len(req.Text()) > 0 {
@@ -131,7 +142,7 @@ func score(cookie *http.Cookie) string {
 	reqs.SetCookie(cookie)
 	headers := normalHeader("")
 	req, err := reqs.Post(EipDomain+"/EIP/edu/chengji.htm", headers)
-	if err!=nil{
+	if err != nil {
 		return "-1"
 	}
 	// fmt.Println(req.Text())
@@ -186,11 +197,11 @@ func score(cookie *http.Cookie) string {
 	}
 	// fmt.Printf("%+v", customformat)
 
-	customlen :=len(customformat) //获取长度
-	recustom:=make([]Custom,customlen) //开辟空间
-	for i,v:=range(customformat){
+	customlen := len(customformat)        //获取长度
+	recustom := make([]Custom, customlen) //开辟空间
+	for i, v := range customformat {
 		//反序列
-		recustom[customlen-i-1]=v
+		recustom[customlen-i-1] = v
 	}
 
 	result, _ := json.Marshal(recustom)
@@ -212,13 +223,13 @@ func login(user string) (bool, *http.Cookie) {
 	}
 	resp, err := requests.Get(EipDomain+"/EIP/weixinEnterprise/cookie.htm?url=/weixin/weui/jiugongge.htmlSPT623e8474576a41e5959ec47f0505109e", headers)
 	cookie := &http.Cookie{}
-	if err != nil ||resp.R.StatusCode!=200 {
+	if err != nil || resp.R.StatusCode != 200 {
 		return false, cookie
 	}
 	//fmt.Printf("%+v", resp.R)
 	head := resp.R.Header["Content-Type"][0]
 	reg := regexp.MustCompile(`gbk`)
-	if  reg.MatchString(head) {
+	if reg.MatchString(head) {
 		return false, resp.Cookies()[0]
 	}
 	return true, resp.Cookies()[0]
