@@ -8,6 +8,8 @@ import (
 )
 
 func init() {
+	//错误页自定义
+	beego.ErrorController(&controllers.ErrorController{})
 	beego.Router("/", &controllers.MainController{})
 	beego.Router("/admin", &controllers.MainController{}, "get:Login;post:LoginPost")
 	beego.Router("/logout", &controllers.MainController{}, "get:Logout")
