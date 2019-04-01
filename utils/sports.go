@@ -1,11 +1,11 @@
 /*
  * @Description:
  * @Author: Moqi
- * @Date: 2018-12-12 10:38:10
+ * @Date: 2018-12-12 10:34:55
  * @Email: str@li.cm
  * @Github: https://github.com/strugglerx
  * @LastEditors: Moqi
- * @LastEditTime: 2018-12-12 10:38:12
+ * @LastEditTime: 2019-03-25 23:07:55
  */
 
 package utils
@@ -81,6 +81,8 @@ func SportCurl(user string, pwd string) interface{} {
 			return
 		} else if i == 0 {
 			Result.ClassName = strings.TrimSpace(res)
+			return
+		} else if i > 21 {
 			return
 		}
 		scoreList = append(scoreList, res)

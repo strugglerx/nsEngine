@@ -1,11 +1,11 @@
 /*
  * @Description:
  * @Author: Moqi
- * @Date: 2018-12-12 10:38:20
+ * @Date: 2018-12-12 10:35:05
  * @Email: str@li.cm
  * @Github: https://github.com/strugglerx
  * @LastEditors: Moqi
- * @LastEditTime: 2018-12-12 10:38:22
+ * @LastEditTime: 2018-12-12 10:35:07
  */
 
 package utils
@@ -88,7 +88,7 @@ func AesDecrypt(crypted, key []byte) ([]byte, error) {
 	return origData, nil
 }
 
-const aeskey = "3dsa124dsf6gfg6z"
+const aeskey = "3dsa124dsf6gfg6s"
 
 //aes加密解密接口
 func CustomAesEncrypt(data string) string {

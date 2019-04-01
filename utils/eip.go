@@ -1,17 +1,18 @@
 /*
  * @Description:
  * @Author: Moqi
- * @Date: 2018-12-12 10:37:02
+ * @Date: 2018-12-12 10:34:19
  * @Email: str@li.cm
  * @Github: https://github.com/strugglerx
  * @LastEditors: Moqi
- * @LastEditTime: 2018-12-12 10:37:05
+ * @LastEditTime: 2019-03-09 16:00:15
  */
 
 package utils
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"regexp"
@@ -22,30 +23,29 @@ import (
 	// // "reflect"
 )
 
-const EipDomain = "http://210.31.182.24"
-
 //自定义Headers里的Cookie
 func normalHeader(session string) requests.Header {
-	normalHeader := requests.Header{
+	//弃用
+	/* 	{
 		"Host":       "eip.imnu.edu.cn",
 		"Origin":     "http://eip.imnu.edu.cn",
 		"Connection": "keep-alive",
 		"User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.3.8 (KHTML, like Gecko) Mobile/14G60 MicroMessenger/6.6.7 NetType/WIFI Language/zh_CN",
 		"Referer":    "http://eip.imnu.edu.cn/EIP/weixin/weui/chengjichaxun.html",
-		"Cookie":     session,
-	}
-	return normalHeader
+		"Cookie":     "",
+	} */
+	return DefaultHeader
 }
 
 //网费
 func netlist(cookie *http.Cookie) string {
+	proxy := beego.AppConfig.String("proxy::url")
 	var reqs = requests.Requests()
 	reqs.SetCookie(cookie)
+	reqs.SetTimeout(3)
 	//获取配置里的代理链接
-	proxy := beego.AppConfig.String("proxy::url")
 	reqs.Proxy(proxy)
-	headers := normalHeader("")
-	req, err := reqs.Post(EipDomain+"/EIP/edu/wangfei/queryUsrBindProduct.htm", headers)
+	req, err := reqs.Post(EipDomain+"/EIP/edu/wangfei/queryUsrBindProduct.htm", DefaultHeader)
 	if err != nil {
 		return "-1"
 	}
@@ -59,14 +59,36 @@ func netlist(cookie *http.Cookie) string {
 
 }
 
+//网费调用third接口
+
+func netThird(user string) string {
+	var reqs = requests.Requests()
+	reqs.SetTimeout(3)
+	headers := requests.Header{
+		"Origin":     "https://servicewechat.com",
+		"User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.3.8 (KHTML, like Gecko) Mobile/14G60 MicroMessenger/6.6.7 NetType/WIFI Language/zh_CN",
+		"Referer":    "https://servicewechat.com/wx2bd97997e95bc55e/51/page-frame.html",
+	}
+	url := fmt.Sprintf("https://www.enjfun.com/weimnu/net?xh=%s", user)
+	req, err := reqs.Get(url, headers)
+	if err != nil {
+		return "-1"
+	}
+	status := gjson.Get(req.Text(), "success").Bool()
+	if status {
+		return gjson.Get(req.Text(), "result.0.otherData").String()
+	} else {
+		return "-1"
+	}
+}
+
 //校园卡余额 慢且经常不能用
 func cardremain(cookie *http.Cookie) {
 	var reqs = requests.Requests()
 	reqs.SetCookie(cookie)
 	reqs.Debug = 1
 	reqs.Proxy("http://140.143.96.216:80")
-	headers := normalHeader("")
-	req, _ := reqs.Post(EipDomain+"/EIP/queryservice/query.htm?snumber=QRY_BAL&xh=20151105822", headers)
+	req, _ := reqs.Post(EipDomain+"/EIP/queryservice/query.htm?snumber=QRY_BAL&xh=20151105822", DefaultHeader)
 	fmt.Println(req.Text())
 }
 
@@ -74,8 +96,8 @@ func cardremain(cookie *http.Cookie) {
 func cardlist(cookie *http.Cookie) string {
 	var reqs = requests.Requests()
 	reqs.SetCookie(cookie)
-	headers := normalHeader("")
-	req, err := reqs.Post(EipDomain+"/EIP/edu/ykt_tongji.htm", headers)
+	reqs.SetTimeout(3)
+	req, err := reqs.Post(EipDomain+"/EIP/edu/ykt_tongji.htm", DefaultHeader)
 	if err != nil {
 		return "-1"
 	}
@@ -87,11 +109,11 @@ func cardlist(cookie *http.Cookie) string {
 func carddetail(date string, cookie *http.Cookie) string {
 	var reqs = requests.Requests()
 	reqs.SetCookie(cookie)
-	headers := normalHeader("")
+	reqs.SetTimeout(3)
 	data := requests.Datas{
 		"date": date,
 	}
-	req, err := reqs.Post(EipDomain+"/EIP/edu/ykt_mingxi.htm", headers, data)
+	req, err := reqs.Post(EipDomain+"/EIP/edu/ykt_mingxi.htm", DefaultHeader, data)
 	if err != nil {
 		return "-1"
 	}
@@ -109,8 +131,8 @@ func carddetail(date string, cookie *http.Cookie) string {
 func info(cookie *http.Cookie) string {
 	var reqs = requests.Requests()
 	reqs.SetCookie(cookie)
-	headers := normalHeader("")
-	req, err := reqs.Post(EipDomain+"/EIP/edu/xueji.htm", headers)
+	reqs.SetTimeout(3)
+	req, err := reqs.Post(EipDomain+"/EIP/edu/xueji.htm", DefaultHeader)
 	if err != nil {
 		return "-1"
 	}
@@ -121,11 +143,11 @@ func info(cookie *http.Cookie) string {
 func class_(date string, cookie *http.Cookie) string {
 	var reqs = requests.Requests()
 	reqs.SetCookie(cookie)
-	headers := normalHeader("")
+	reqs.SetTimeout(3)
 	data := requests.Datas{
 		"monday_": date,
 	}
-	req, err := reqs.Post(EipDomain+"/EIP/qiandao/kebiao/queryKebiaoByUserId.htm", headers, data)
+	req, err := reqs.Post(EipDomain+"/EIP/qiandao/kebiao/queryKebiaoByUserId.htm", DefaultHeader, data)
 	if err != nil {
 		return "-1"
 	}
@@ -140,47 +162,13 @@ func class_(date string, cookie *http.Cookie) string {
 func score(cookie *http.Cookie) string {
 	var reqs = requests.Requests()
 	reqs.SetCookie(cookie)
-	headers := normalHeader("")
-	req, err := reqs.Post(EipDomain+"/EIP/edu/chengji.htm", headers)
+	reqs.SetTimeout(3)
+	req, err := reqs.Post(EipDomain+"/EIP/edu/chengji.htm", DefaultHeader)
 	if err != nil {
 		return "-1"
 	}
 	// fmt.Println(req.Text())
 	change := []byte(req.Text())
-	//单个成绩数据结构
-	type EachItem struct {
-		JXJHH string
-		XQ    string
-		XH    string
-		KCM   string
-		XF    float64
-		CJ    string
-		XKLX  string
-		_id   struct {
-			inc        int64
-			machine    int64
-			new        bool
-			time       int64
-			timeSecond int64
-		}
-	}
-	//原始api返回数据结构
-	type EipStr struct {
-		JXJHH string
-		XQ    string
-		CJ    []EachItem
-	}
-	//修改后的数据结构
-	type CustomItem struct {
-		Course     string      `json:"course"`
-		Credit     interface{} `json:"credit"`
-		Attributes string      `json:"attributes"`
-		Score      string      `json:"score"`
-	}
-	type Custom struct {
-		Term   string       `json:"term"`
-		Values []CustomItem `json:"values"`
-	}
 
 	var eipformat []EipStr
 	json.Unmarshal(change, &eipformat)
@@ -203,7 +191,6 @@ func score(cookie *http.Cookie) string {
 		//反序列
 		recustom[customlen-i-1] = v
 	}
-
 	result, _ := json.Marshal(recustom)
 	return string(result)
 }
@@ -237,29 +224,35 @@ func login(user string) (bool, *http.Cookie) {
 	//[]*http.Cookie
 }
 
-func EipEntry(user string, type_ string, date string) string {
+func EipEntry(user string, type_ string, date string) (string, error) {
 	status, cookie := login(user)
 	if status {
 		switch type_ {
 		case "score":
-			return score(cookie)
+			return score(cookie), nil
 		case "info":
-			return info(cookie)
+			return info(cookie), nil
 		case "card":
 			date := cardlist(cookie)
 			if len(date) == 8 {
 				result := carddetail(date, cookie)
-				return result
+				return result, nil
 			} else {
-				return "-1"
+				return "", errors.New("fail")
 			}
 		case "net":
-			return netlist(cookie)
+			netStatus, _ := beego.AppConfig.Bool("proxy::status")
+			// 通过app.conf的proxy::status判断是否启动代理接口
+			if netStatus {
+				return netlist(cookie), nil
+			} else {
+				return netThird(user), nil
+			}
 		case "class_":
-			return class_(date, cookie)
+			return class_(date, cookie), nil
 		default:
-			return "-1"
+			return "", errors.New("fail")
 		}
 	}
-	return "-1"
+	return "", errors.New("fail")
 }
