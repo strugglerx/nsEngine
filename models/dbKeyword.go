@@ -1,12 +1,11 @@
 package models
 
 import (
-	"server/models/mymongo"
+	"errors"
+	"fmt"
 
 	"gopkg.in/mgo.v2/bson"
 )
-
-const collections="keywords"
 
 type keywords struct {
 	Id      bson.ObjectId `json:"_id,omitempty" bson:"_id,omitempty"`
@@ -19,18 +18,26 @@ func KeywordInsert(content, keyword string) bool {
 		Keyword: keyword,
 		Content: content,
 	}
-	database := mymongo.GetDataBase()
-	err := database.C(collections).Insert(data)
+	err := Keywords.
+		Insert(data)
 	if err != nil {
 		return false
 	}
 	return true
 }
 
+func KeywordRename(id, content string) error {
+	err := Keywords.
+		Update(bson.M{"_id": bson.ObjectIdHex(id)}, bson.M{"$set": bson.M{"content": content}})
+	if err != nil {
+		fmt.Println(err)
+		return errors.New("fail")
+	}
+	return nil
+}
+
 func KeywordDelete(id string) bool {
-	database := mymongo.GetDataBase()
-	err := database.
-		C(collections).
+	err := Keywords.
 		Remove(bson.M{"_id": bson.ObjectIdHex(id)})
 	if err != nil {
 		return false
@@ -39,10 +46,8 @@ func KeywordDelete(id string) bool {
 }
 
 func KeywordFind(keyword string) keywords {
-	database := mymongo.GetDataBase()
 	var result keywords
-	err := database.
-		C(collections).
+	err := Keywords.
 		Find(bson.M{"keyword": bson.M{"$regex": keyword}}).
 		One(&result)
 	if err != nil {
@@ -52,10 +57,8 @@ func KeywordFind(keyword string) keywords {
 }
 
 func KeywordList() []keywords {
-	database := mymongo.GetDataBase()
 	var result []keywords
-	err := database.
-		C(collections).
+	err := Keywords.
 		Find(bson.M{}).
 		Sort("-_id").
 		All(&result)

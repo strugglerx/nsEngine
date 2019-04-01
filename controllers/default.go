@@ -1,20 +1,48 @@
+/*
+ * @Description:
+ * @Author: Moqi
+ * @Email: str@li.cm
+ * @Github: https://github.com/strugglerx
+ * @LastEditors: Moqi
+ * @Date: 2019-03-09 14:33:56
+ * @LastEditTime: 2019-03-09 15:46:43
+ */
+
 package controllers
 
 import (
 	"encoding/json"
-	"github.com/astaxie/beego"
-	"server/models"
 	"server/utils"
 )
 
-type MainController struct {
-	beego.Controller
+type Base_ struct {
+	Code   string `json:"code"`
+	Status int64  `json:"status"`
 }
 
+//自定义响应生成结构体
+type CustomResponse struct {
+	Base_
+	Data interface{} `json:"data,omitempty"`
+}
+
+//网页通知响应
 type MainResponse struct {
-	Code   string `json:"code"`
-	Status int    `json:"status"`
-	Msg interface{}    `json:"message,omitempty"`
+	Base_
+	Message interface{} `json:"message,omitempty"`
+}
+
+//eip响应生成结构体
+type CustomEipResponse struct {
+	Code    string      `json:"code"`
+	Status  int64       `json:"status"`
+	Data    interface{} `json:"data,omitempty"`
+	Encrypt string      `json:"encrypt,omitempty"`
+}
+
+func (res *CustomResponse) JsonFormat() string {
+	datas := utils.WxJsonMarshal(res)
+	return string(datas)
 }
 
 func (res *MainResponse) JsonParse() string {
@@ -22,55 +50,51 @@ func (res *MainResponse) JsonParse() string {
 	return string(datas)
 }
 
-func (c *MainController) Get() {
-	c.TplName = "home.html"
+func (res *CustomEipResponse) JsonFormat() string {
+	//datas, _ := json.Marshal(res)
+	datas := utils.WxJsonMarshal(res)
+	return string(datas)
 }
 
+/**
+ * @description:Api接口响应内容
+ * @return:
+ */
 
-func (c *MainController) Login() {
-	sess :=c.GetSession("role")
-	if sess ==nil{
-		c.TplName = "login.html"
-	}else{
-		c.Redirect("/manager",302)
-	}
-
+//api有数据响应
+func ApiResponse(data interface{}) string {
+	var r *CustomResponse = &CustomResponse{Base_{"1000", 0}, data}
+	return r.JsonFormat()
 }
 
-func (c *MainController) LoginPost() {
-	sess :=c.GetSession("role")
-	if sess ==nil{
-		user:=c.GetString("user")
-		pwd:=c.GetString("passwd")
-
-		if user!=""&&pwd!=""{
-			//加密密码
-			cryptoPwd:=utils.Md5String(pwd)
-			verifyInfo:=models.UserVerify(user,cryptoPwd)
-			if len(verifyInfo)==1 {
-				c.SetSession("role",verifyInfo[0].Role)
-				c.SetSession("user",verifyInfo[0].User)
-				info := MainResponse{"1000", 0,"login success"}
-				c.Ctx.WriteString(info.JsonParse())
-			}else {
-				info := MainResponse{"1002", -2,"login fail"}
-				c.Ctx.WriteString(info.JsonParse())
-			}
-		}else {
-			info := MainResponse{"1002", -2,"params can not empty!"}
-			c.Ctx.WriteString(info.JsonParse())
-
-		}
-
-	}else{
-		info := MainResponse{"1001", -1,"you already login"}
-		c.Ctx.WriteString(info.JsonParse())
-	}
+//数据库查询不正确响应
+func ApiDbFail() string {
+	var r *CustomResponse = &CustomResponse{Base_{"1001", -1}, nil}
+	return r.JsonFormat()
 }
 
-func (c *MainController) Logout() {
-	c.DelSession("role")
-	info := MainResponse{"1000", 0,"logout success"}
-	c.Ctx.WriteString(info.JsonParse())
+//参数不正确响应
+func ApiFail() string {
+	var r *CustomResponse = &CustomResponse{Base_{"1002", -2}, nil}
+	return r.JsonFormat()
+}
 
+/**
+ * @description:带message的响应
+ * @param {type}
+ * @return:
+ */
+func MsgResponse(message interface{}) string {
+	var r *MainResponse = &MainResponse{Base_{"1000", 0}, message}
+	return r.JsonParse()
+}
+
+func MsgDbFail(message interface{}) string {
+	var r *MainResponse = &MainResponse{Base_{"1001", -1}, message}
+	return r.JsonParse()
+}
+
+func MsgFail(message interface{}) string {
+	var r *MainResponse = &MainResponse{Base_{"1002", -2}, message}
+	return r.JsonParse()
 }
